@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFile } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
@@ -9,6 +9,7 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 const scriptDirectory = fileURLToPath(new URL(".", import.meta.url));
 const outputDirectory = resolve(scriptDirectory, "../assets/hero");
+const featuredProjectsPath = resolve(scriptDirectory, "../data/featured-projects.json");
 
 const portraitFilter = [
   "crop=1700:1900:800:1950",
@@ -17,55 +18,60 @@ const portraitFilter = [
   "unsharp=3:3:0.35"
 ].join(",");
 
-const profileLines = [
-  { type: "header", value: "wildan@agentlab" },
-  { type: "row", key: "Subject", value: "Wildan Syukri Niam" },
-  { type: "row", key: "Role", value: "AI Researcher & Web3 Builder" },
-  { type: "row", key: "Affiliation", value: "Telkom University" },
-  { type: "row", key: "Base", value: "Bandung, Indonesia" },
-  { type: "row", key: "Status", value: "Researching / Building / Shipping" },
-  { type: "blank" },
-  { type: "section", value: "RESEARCH.NODE" },
-  { type: "row", key: "Primary", value: "AI Agents" },
-  { type: "row", key: "Direction", value: "Trustworthy Autonomous Systems" },
-  { type: "row", key: "Themes", value: "Multi-agent systems / agentic payments" },
-  { type: "blank" },
-  { type: "section", value: "BUILD.LOG" },
-  { type: "row", key: "PayGate", value: "Agentic payments" },
-  { type: "row", key: "Fradium", value: "Web3 trust layer" },
-  { type: "row", key: "NovaAI", value: "Intelligent wallet" },
-  { type: "row", key: "Quorum", value: "Agent coordination" },
-  { type: "blank" },
-  { type: "section", value: "GRID.LINKS" },
-  { type: "row", key: "GitHub", value: "@wildanniam" },
-  { type: "footer", value: "signal.locked > AI / WEB3 / AGENTS" }
-];
+function buildProfileLines(projects) {
+  const shortNames = {
+    "Nova AI Wallet": "Nova AI"
+  };
+
+  return [
+    { type: "header", value: "wildan@build" },
+    { type: "row", key: "Name", value: "Wildan Syukri Niam" },
+    { type: "row", key: "Role", value: "Full-Stack Builder" },
+    { type: "row", key: "Based", value: "Bandung, Indonesia" },
+    { type: "row", key: "Mode", value: "Designing / Building / Shipping" },
+    { type: "blank" },
+    { type: "section", value: "BUILD.FOCUS" },
+    { type: "row", key: "Product", value: "Idea to working release" },
+    { type: "row", key: "AI", value: "Agents and tool use" },
+    { type: "row", key: "Web3", value: "Smart contracts and payments" },
+    { type: "row", key: "Quality", value: "Testing and reliability" },
+    { type: "blank" },
+    { type: "section", value: "SELECTED.WORK" },
+    ...projects.map((project) => ({
+      type: "row",
+      key: shortNames[project.name] ?? project.name,
+      value: project.focus
+    })),
+    { type: "blank" },
+    { type: "footer", value: "FROM IDEA TO WORKING PRODUCT" }
+  ];
+}
 
 const palettes = {
   dark: {
-    backgroundStart: "#020617",
-    backgroundEnd: "#11152F",
-    panel: "#07111F",
-    primary: "#E5E7EB",
-    muted: "#64748B",
-    cyan: "#22D3EE",
-    blue: "#38BDF8",
-    violet: "#7C3AED",
-    green: "#10B981",
-    red: "#F87171",
+    backgroundStart: "#17130F",
+    backgroundEnd: "#2B211A",
+    panel: "#211A16",
+    primary: "#F4EEE6",
+    muted: "#B8A99A",
+    cyan: "#D97745",
+    blue: "#E3A27D",
+    violet: "#C98A67",
+    green: "#91A07F",
+    red: "#D97745",
     scanBlend: "screen"
   },
   light: {
-    backgroundStart: "#F8FBFF",
-    backgroundEnd: "#F5F3FF",
-    panel: "#FFFFFF",
-    primary: "#172554",
-    muted: "#64748B",
-    cyan: "#0891B2",
-    blue: "#2563EB",
-    violet: "#6D28D9",
-    green: "#047857",
-    red: "#DC2626",
+    backgroundStart: "#F7F1E8",
+    backgroundEnd: "#EEE2D4",
+    panel: "#FFF9F1",
+    primary: "#211A16",
+    muted: "#75675C",
+    cyan: "#A9431F",
+    blue: "#C66B43",
+    violet: "#8A6848",
+    green: "#56715A",
+    red: "#A9431F",
     scanBlend: "multiply"
   }
 };
@@ -116,18 +122,14 @@ function buildAmbientPortraitLayer(layout, colors, size) {
   return `<g clip-path="url(#portrait-clip)" class="ambient-map" aria-hidden="true">
   <rect x="${clip.x}" y="${clip.y}" width="${clip.width}" height="${clip.height}" fill="url(#portrait-grid)"/>
   <ellipse cx="${centerX.toFixed(1)}" cy="${centerY.toFixed(1)}" rx="${(orbitWidth * 0.54).toFixed(1)}" ry="${(orbitHeight * 0.54).toFixed(1)}" fill="url(#portrait-halo)"/>
-  <ellipse cx="${centerX.toFixed(1)}" cy="${centerY.toFixed(1)}" rx="${(orbitWidth * 0.5).toFixed(1)}" ry="${(orbitHeight * 0.5).toFixed(1)}" fill="none" stroke="${colors.blue}" stroke-width="1" stroke-dasharray="3 14" opacity="0.13">
-    <animateTransform attributeName="transform" type="rotate" from="0 ${centerX.toFixed(1)} ${centerY.toFixed(1)}" to="360 ${centerX.toFixed(1)} ${centerY.toFixed(1)}" dur="42s" repeatCount="indefinite"/>
-  </ellipse>
-  <ellipse cx="${centerX.toFixed(1)}" cy="${centerY.toFixed(1)}" rx="${(orbitWidth * 0.4).toFixed(1)}" ry="${(orbitHeight * 0.38).toFixed(1)}" fill="none" stroke="${colors.violet}" stroke-width="1" stroke-dasharray="28 24" opacity="0.1">
-    <animateTransform attributeName="transform" type="rotate" from="360 ${centerX.toFixed(1)} ${centerY.toFixed(1)}" to="0 ${centerX.toFixed(1)} ${centerY.toFixed(1)}" dur="34s" repeatCount="indefinite"/>
-  </ellipse>
+  <ellipse class="motion-orbit motion-orbit--forward" style="transform-origin:${centerX.toFixed(1)}px ${centerY.toFixed(1)}px" cx="${centerX.toFixed(1)}" cy="${centerY.toFixed(1)}" rx="${(orbitWidth * 0.5).toFixed(1)}" ry="${(orbitHeight * 0.5).toFixed(1)}" fill="none" stroke="${colors.blue}" stroke-width="1" stroke-dasharray="3 14" opacity="0.13"/>
+  <ellipse class="motion-orbit motion-orbit--backward" style="transform-origin:${centerX.toFixed(1)}px ${centerY.toFixed(1)}px" cx="${centerX.toFixed(1)}" cy="${centerY.toFixed(1)}" rx="${(orbitWidth * 0.4).toFixed(1)}" ry="${(orbitHeight * 0.38).toFixed(1)}" fill="none" stroke="${colors.violet}" stroke-width="1" stroke-dasharray="28 24" opacity="0.1"/>
   <path d="M ${left} ${top} H ${left + (isDesktop ? 42 : 62)} M ${left} ${top} V ${top + (isDesktop ? 42 : 54)} M ${right} ${bottom} H ${right - (isDesktop ? 42 : 62)} M ${right} ${bottom} V ${bottom - (isDesktop ? 42 : 54)}" fill="none" stroke="${colors.cyan}" stroke-width="1.2" opacity="0.2"/>
   <path d="M ${left} ${(centerY + 42).toFixed(1)} C ${(left + 32).toFixed(1)} ${(centerY + 8).toFixed(1)}, ${(centerX - orbitWidth * 0.3).toFixed(1)} ${(centerY + 58).toFixed(1)}, ${(centerX - orbitWidth * 0.19).toFixed(1)} ${(centerY + 27).toFixed(1)}" fill="none" stroke="${colors.blue}" stroke-width="1" opacity="0.12"/>
   <path d="M ${right} ${(centerY - 52).toFixed(1)} C ${(right - 38).toFixed(1)} ${(centerY - 18).toFixed(1)}, ${(centerX + orbitWidth * 0.31).toFixed(1)} ${(centerY - 70).toFixed(1)}, ${(centerX + orbitWidth * 0.2).toFixed(1)} ${(centerY - 30).toFixed(1)}" fill="none" stroke="${colors.green}" stroke-width="1" opacity="0.11"/>
   <g fill="${colors.cyan}">
-    <circle cx="${left}" cy="${top}" r="2.2" opacity="0.42"><animate attributeName="opacity" values="0.2;0.58;0.2" dur="5.6s" repeatCount="indefinite"/></circle>
-    <circle cx="${right}" cy="${bottom}" r="2.2" opacity="0.42"><animate attributeName="opacity" values="0.58;0.2;0.58" dur="6.4s" repeatCount="indefinite"/></circle>
+    <circle cx="${left}" cy="${top}" r="2.2" opacity="0.42"/>
+    <circle cx="${right}" cy="${bottom}" r="2.2" opacity="0.42"/>
     <circle cx="${left + (isDesktop ? 12 : 18)}" cy="${(centerY + 48).toFixed(1)}" r="1.7" opacity="0.32"/>
     <circle cx="${right - (isDesktop ? 10 : 16)}" cy="${(centerY - 58).toFixed(1)}" r="1.7" opacity="0.28"/>
   </g>
@@ -249,46 +251,39 @@ function createAsciiTspans({ pixels, width, height }, placement) {
   return rows.join("\n");
 }
 
-function buildSystemLayer({ x, y, width, lineHeight, fontSize }, colors) {
-  const clips = [];
+function buildSystemLayer({ x, y, lineHeight, fontSize }, colors, profileLines) {
   const rows = [];
 
   profileLines.forEach((line, index) => {
     if (line.type === "blank") return;
 
-    const id = `system-line-${index}`;
     const lineY = y + index * lineHeight;
-    const begin = (0.68 + index * 0.105).toFixed(2);
-
-    clips.push(
-      `<clipPath id="${id}"><rect x="${x - 3}" y="${(lineY - fontSize - 2).toFixed(2)}" width="0" height="${fontSize + 8}"><animate attributeName="width" from="0" to="${width}" dur="0.36s" begin="${begin}s" fill="freeze"/></rect></clipPath>`
-    );
 
     if (line.type === "header") {
-      rows.push(`<g clip-path="url(#${id})"><text x="${x}" y="${lineY}" class="system-head"><tspan fill="${colors.violet}">${escapeXml(line.value)}</tspan><tspan fill="${colors.muted}"> ------------------------------------------</tspan></text></g>`);
+      rows.push(`<text x="${x}" y="${lineY}" class="system-head"><tspan fill="${colors.violet}">${escapeXml(line.value)}</tspan><tspan fill="${colors.muted}"> ------------------------------------------</tspan></text>`);
       return;
     }
 
     if (line.type === "section") {
-      rows.push(`<g clip-path="url(#${id})"><text x="${x}" y="${lineY}" class="system-section" fill="${colors.green}">- ${escapeXml(line.value)} -----------------------------------</text></g>`);
+      rows.push(`<text x="${x}" y="${lineY}" class="system-section" fill="${colors.green}">- ${escapeXml(line.value)} -----------------------------------</text>`);
       return;
     }
 
     if (line.type === "footer") {
-      rows.push(`<g clip-path="url(#${id})"><text x="${x}" y="${lineY}" class="system-footer" fill="${colors.blue}">${escapeXml(line.value)}</text></g>`);
+      rows.push(`<text x="${x}" y="${lineY}" class="system-footer" fill="${colors.blue}">${escapeXml(line.value)}</text>`);
       return;
     }
 
     const dots = ".".repeat(Math.max(3, 14 - line.key.length));
     rows.push(
-      `<g clip-path="url(#${id})"><text x="${x}" y="${lineY}" class="system-row"><tspan fill="${colors.muted}">. </tspan><tspan class="system-key" fill="${colors.cyan}">${escapeXml(line.key)}</tspan><tspan fill="${colors.muted}">: ${dots} </tspan><tspan fill="${colors.primary}">${escapeXml(line.value)}</tspan></text></g>`
+      `<text x="${x}" y="${lineY}" class="system-row"><tspan fill="${colors.muted}">. </tspan><tspan class="system-key" fill="${colors.cyan}">${escapeXml(line.key)}</tspan><tspan fill="${colors.muted}">: ${dots} </tspan><tspan fill="${colors.primary}">${escapeXml(line.value)}</tspan></text>`
     );
   });
 
-  return { clips: clips.join("\n"), rows: rows.join("\n") };
+  return rows.join("\n");
 }
 
-function createHeroSvg(mode, size, portrait) {
+function createHeroSvg(mode, size, portrait, profileLines) {
   const colors = palettes[mode];
   const layout = layouts[size];
   const titlebar = layout.titlebar;
@@ -297,26 +292,23 @@ function createHeroSvg(mode, size, portrait) {
   const clip = layout.portraitClip;
   const ascii = createAsciiTspans(portrait, layout.portrait);
   const ambientPortrait = buildAmbientPortraitLayer(layout, colors, size);
-  const system = buildSystemLayer(layout.system, colors);
+  const system = buildSystemLayer(layout.system, colors, profileLines);
   const isDesktop = size === "desktop";
   const titleCenter = titlebar.x + titlebar.width / 2;
   const liveX = titlebar.x + titlebar.width - (isDesktop ? 138 : 94);
-  const cursorY = layout.system.y + (profileLines.length - 1) * layout.system.lineHeight - 15;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" role="img" aria-labelledby="title description">
-<title id="title">Wildan Syukri Niam - AI Researcher and Web3 Builder</title>
-<desc id="description">An animated agent intelligence console with an ASCII portrait, research direction, featured builds, and profile links.</desc>
+<title id="title">Wildan Syukri Niam - Full-Stack Builder</title>
+<desc id="description">A warm editorial profile card with Wildan's ASCII portrait, product focus, and selected work.</desc>
 <defs>
   <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${colors.backgroundStart}"/><stop offset="1" stop-color="${colors.backgroundEnd}"/></linearGradient>
-  <linearGradient id="ascii-signal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${colors.cyan}"><animate attributeName="stop-color" values="${colors.cyan};${colors.violet};${colors.blue};${colors.cyan}" dur="9s" repeatCount="indefinite"/></stop><stop offset="1" stop-color="${colors.violet}"><animate attributeName="stop-color" values="${colors.violet};${colors.blue};${colors.cyan};${colors.violet}" dur="9s" repeatCount="indefinite"/></stop></linearGradient>
+  <linearGradient id="ascii-signal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${colors.cyan}"/><stop offset="1" stop-color="${colors.violet}"/></linearGradient>
   <linearGradient id="border" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${colors.violet}"/><stop offset="0.48" stop-color="${colors.cyan}"/><stop offset="1" stop-color="${colors.green}"/></linearGradient>
   <linearGradient id="scan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${colors.cyan}" stop-opacity="0"/><stop offset="0.5" stop-color="${colors.cyan}" stop-opacity="0.46"/><stop offset="1" stop-color="${colors.violet}" stop-opacity="0"/></linearGradient>
   <radialGradient id="portrait-halo"><stop offset="0" stop-color="${colors.cyan}" stop-opacity="0.12"/><stop offset="0.48" stop-color="${colors.blue}" stop-opacity="0.055"/><stop offset="1" stop-color="${colors.violet}" stop-opacity="0"/></radialGradient>
   <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="${colors.cyan}" opacity="0.052"/></pattern>
   <pattern id="portrait-grid" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M 44 0 H 0 V 44" fill="none" stroke="${colors.blue}" stroke-width="0.65" opacity="0.085"/><circle cx="0" cy="0" r="1.2" fill="${colors.cyan}" opacity="0.13"/></pattern>
   <clipPath id="portrait-clip"><rect x="${clip.x}" y="${clip.y}" width="${clip.width}" height="${clip.height}" rx="${clip.radius}"/></clipPath>
-  <mask id="portrait-reveal"><rect x="${clip.x}" y="${clip.y}" width="${clip.width}" height="0" rx="${clip.radius}" fill="white"><animate attributeName="height" from="0" to="${clip.height}" dur="2.1s" begin="0.12s" fill="freeze"/></rect></mask>
-  ${system.clips}
   <style>
     .mono { font-family: 'Courier New', Consolas, monospace; }
     .ascii { font-family: 'Courier New', Consolas, monospace; font-size: ${layout.portrait.fontSize}px; letter-spacing: -0.15px; fill: url(#ascii-signal); }
@@ -327,44 +319,124 @@ function createHeroSvg(mode, size, portrait) {
     .system-section, .system-footer, .system-row { font-family: 'Courier New', Consolas, monospace; font-size: ${layout.system.fontSize}px; }
     .system-section, .system-key { font-weight: 700; }
     text, tspan { white-space: pre; }
+    .motion-orbit { transform-box: view-box; }
+    @keyframes orbit-forward { to { transform: rotate(360deg); } }
+    @keyframes orbit-backward { to { transform: rotate(-360deg); } }
+    @keyframes scan-sweep { from { transform: translateY(0); } to { transform: translateY(${layout.height + 140}px); } }
+    @media (prefers-reduced-motion: no-preference) {
+      .motion-orbit--forward { animation: orbit-forward 42s linear infinite; }
+      .motion-orbit--backward { animation: orbit-backward 34s linear infinite; }
+      .motion-scan { animation: scan-sweep 8s linear infinite; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .motion-scan { display: none; }
+    }
   </style>
 </defs>
 <rect width="${layout.width}" height="${layout.height}" rx="${layout.outerRadius}" fill="url(#background)"/>
 <rect width="${layout.width}" height="${layout.height}" rx="${layout.outerRadius}" fill="url(#scanlines)"/>
 <rect x="${titlebar.x}" y="${titlebar.y}" width="${titlebar.width}" height="${titlebar.height}" rx="${titlebar.radius}" fill="${colors.panel}" fill-opacity="0.84"/>
-<circle cx="${titlebar.x + 21}" cy="${titlebar.y + titlebar.height / 2}" r="5" fill="#EF4444"><animate attributeName="opacity" values="1;0.55;1" dur="4s" repeatCount="indefinite"/></circle>
-<circle cx="${titlebar.x + 39}" cy="${titlebar.y + titlebar.height / 2}" r="5" fill="#F59E0B"><animate attributeName="opacity" values="1;0.55;1" dur="4s" begin="0.3s" repeatCount="indefinite"/></circle>
-<circle cx="${titlebar.x + 57}" cy="${titlebar.y + titlebar.height / 2}" r="5" fill="${colors.green}"><animate attributeName="opacity" values="1;0.55;1" dur="4s" begin="0.6s" repeatCount="indefinite"/></circle>
-<text x="${titleCenter}" y="${titlebar.y + titlebar.height / 2 + 5}" text-anchor="middle" class="terminal-label">wildan@agentlab ~ % ./profile --live</text>
-${isDesktop ? `<circle cx="${liveX}" cy="${titlebar.y + titlebar.height / 2}" r="4" fill="${colors.red}"><animate attributeName="opacity" values="1;0.15;1" dur="1.1s" repeatCount="indefinite"/></circle><text x="${liveX + 10}" y="${titlebar.y + titlebar.height / 2 + 4}" class="live-label">SCANNING</text>` : ""}
+<circle cx="${titlebar.x + 21}" cy="${titlebar.y + titlebar.height / 2}" r="5" fill="${colors.cyan}" opacity="0.88"/>
+<circle cx="${titlebar.x + 39}" cy="${titlebar.y + titlebar.height / 2}" r="5" fill="${colors.violet}" opacity="0.7"/>
+<circle cx="${titlebar.x + 57}" cy="${titlebar.y + titlebar.height / 2}" r="5" fill="${colors.green}" opacity="0.78"/>
+<text x="${titleCenter}" y="${titlebar.y + titlebar.height / 2 + 5}" text-anchor="middle" class="terminal-label">wildan@build ~ % ./profile</text>
+${isDesktop ? `<circle cx="${liveX}" cy="${titlebar.y + titlebar.height / 2}" r="4" fill="${colors.red}"/><text x="${liveX + 10}" y="${titlebar.y + titlebar.height / 2 + 4}" class="live-label">BUILDING</text>` : ""}
 <rect x="${visual.x}" y="${visual.y}" width="${visual.width}" height="${visual.height}" rx="${visual.radius}" fill="${colors.panel}" fill-opacity="0.38" stroke="url(#border)" stroke-opacity="0.42"/>
 <rect x="${info.x}" y="${info.y}" width="${info.width}" height="${info.height}" rx="${info.radius}" fill="${colors.panel}" fill-opacity="0.42" stroke="url(#border)" stroke-opacity="0.42"/>
-<text x="${layout.visualTitle.x}" y="${layout.visualTitle.y}" class="panel-title">VISUAL.MAP / PORTRAIT.SIGNAL</text>
-<text x="${layout.infoTitle.x}" y="${layout.infoTitle.y}" class="panel-title">SYSTEM.INFO / RESEARCH.BUILDER</text>
+<text x="${layout.visualTitle.x}" y="${layout.visualTitle.y}" class="panel-title">PORTRAIT / WILDAN</text>
+<text x="${layout.infoTitle.x}" y="${layout.infoTitle.y}" class="panel-title">PROFILE / BUILDER</text>
 ${ambientPortrait}
-<g clip-path="url(#portrait-clip)" mask="url(#portrait-reveal)"><text class="ascii" fill="${colors.cyan}" font-family="'Courier New', Consolas, monospace" font-size="${layout.portrait.fontSize}px" letter-spacing="-0.15px">${ascii}</text></g>
-${system.rows}
-<rect x="${layout.system.x + 2}" y="${cursorY}" width="9" height="${layout.system.fontSize + 2}" fill="${colors.cyan}" opacity="0"><animate attributeName="opacity" values="0;0;1;0;1;0;1;0" keyTimes="0;0.03;0.06;0.32;0.5;0.68;0.84;1" dur="1.4s" begin="3.3s" repeatCount="indefinite"/></rect>
-<text x="${layout.width / 2}" y="${layout.footerY}" text-anchor="middle" class="mono" font-size="10" letter-spacing="1.5" fill="${colors.muted}">AI AGENTS / WEB3 TRUST / AUTONOMOUS SYSTEMS</text>
-<rect x="0" y="-70" width="${layout.width}" height="70" fill="url(#scan)" opacity="0.72" style="mix-blend-mode:${colors.scanBlend}"><animateTransform attributeName="transform" type="translate" from="0 -70" to="0 ${layout.height + 70}" dur="4.5s" repeatCount="indefinite"/></rect>
-<rect x="3" y="3" width="${layout.width - 6}" height="${layout.height - 6}" rx="${layout.outerRadius - 2}" fill="none" stroke="url(#border)" stroke-width="2" opacity="0.76"><animate attributeName="opacity" values="0.5;0.94;0.5" dur="3.4s" repeatCount="indefinite"/></rect>
+<g clip-path="url(#portrait-clip)"><text class="ascii" fill="${colors.cyan}" font-family="'Courier New', Consolas, monospace" font-size="${layout.portrait.fontSize}px" letter-spacing="-0.15px">${ascii}</text></g>
+${system}
+<text x="${layout.width / 2}" y="${layout.footerY}" text-anchor="middle" class="mono" font-size="10" letter-spacing="1.5" fill="${colors.muted}">PRODUCT ENGINEERING / AI AGENTS / WEB3 / DEVELOPER TOOLS</text>
+<rect class="motion-scan" x="0" y="-70" width="${layout.width}" height="70" fill="url(#scan)" opacity="0.42" style="mix-blend-mode:${colors.scanBlend}"/>
+<rect x="3" y="3" width="${layout.width - 6}" height="${layout.height - 6}" rx="${layout.outerRadius - 2}" fill="none" stroke="url(#border)" stroke-width="2" opacity="0.76"/>
 </svg>`;
+}
+
+const outputs = [
+  { filename: "builder-profile-v1-dark.svg", mode: "dark", size: "desktop" },
+  { filename: "builder-profile-v1-light.svg", mode: "light", size: "desktop" },
+  { filename: "builder-profile-v1-mobile-dark.svg", mode: "dark", size: "mobile" },
+  { filename: "builder-profile-v1-mobile-light.svg", mode: "light", size: "mobile" }
+];
+
+function normalizeSvg(value) {
+  return `${value.trimEnd()}\n`;
 }
 
 async function main() {
   const sourcePath = getSourcePath();
-  const desktopPortrait = await samplePortrait(sourcePath, layouts.desktop.portrait.columns, layouts.desktop.portrait.rows);
-  const mobilePortrait = await samplePortrait(sourcePath, layouts.mobile.portrait.columns, layouts.mobile.portrait.rows);
+  const checkOnly = process.argv.includes("--check");
+  const projects = JSON.parse(await readFile(featuredProjectsPath, "utf8"));
+
+  if (!Array.isArray(projects) || projects.length !== 5) {
+    throw new Error("Featured project data must contain exactly five projects.");
+  }
+
+  const seenRepos = new Set();
+
+  for (const project of projects) {
+    for (const field of ["name", "repo", "url", "role", "status", "focus", "summary"]) {
+      if (typeof project[field] !== "string" || project[field].trim() === "") {
+        throw new Error(`Featured project ${project.name ?? "(unknown)"} is missing ${field}.`);
+      }
+    }
+
+    if (seenRepos.has(project.repo)) {
+      throw new Error(`Featured project repo is duplicated: ${project.repo}.`);
+    }
+    seenRepos.add(project.repo);
+
+    for (const [field, value] of [["url", project.url], ["homepage", project.homepage]]) {
+      if (value === null && field === "homepage") continue;
+      if (typeof value !== "string" || new URL(value).protocol !== "https:") {
+        throw new Error(`Featured project ${project.name} has an unsafe ${field}.`);
+      }
+    }
+  }
+
+  const profileLines = buildProfileLines(projects);
+  const portraits = {
+    desktop: await samplePortrait(sourcePath, layouts.desktop.portrait.columns, layouts.desktop.portrait.rows),
+    mobile: await samplePortrait(sourcePath, layouts.mobile.portrait.columns, layouts.mobile.portrait.rows)
+  };
+  const generated = outputs.map((output) => ({
+    ...output,
+    content: normalizeSvg(
+      createHeroSvg(output.mode, output.size, portraits[output.size], profileLines)
+    )
+  }));
 
   await mkdir(outputDirectory, { recursive: true });
-  await Promise.all([
-    writeFile(resolve(outputDirectory, "agent-console-v5-dark.svg"), createHeroSvg("dark", "desktop", desktopPortrait)),
-    writeFile(resolve(outputDirectory, "agent-console-v5-light.svg"), createHeroSvg("light", "desktop", desktopPortrait)),
-    writeFile(resolve(outputDirectory, "agent-console-v5-mobile-dark.svg"), createHeroSvg("dark", "mobile", mobilePortrait)),
-    writeFile(resolve(outputDirectory, "agent-console-v5-mobile-light.svg"), createHeroSvg("light", "mobile", mobilePortrait))
-  ]);
 
-  console.log(`Generated refined hero assets from ${basename(sourcePath)}.`);
+  if (checkOnly) {
+    const drifted = [];
+
+    for (const output of generated) {
+      try {
+        const current = await readFile(resolve(outputDirectory, output.filename), "utf8");
+        if (current !== output.content) drifted.push(output.filename);
+      } catch {
+        drifted.push(output.filename);
+      }
+    }
+
+    if (drifted.length > 0) {
+      throw new Error(`Generated hero assets are stale: ${drifted.join(", ")}`);
+    }
+
+    console.log("Hero assets match deterministic generator output.");
+    return;
+  }
+
+  await Promise.all(
+    generated.map((output) =>
+      writeFile(resolve(outputDirectory, output.filename), output.content)
+    )
+  );
+
+  console.log(`Generated builder-first hero assets from ${basename(sourcePath)}.`);
 }
 
 main().catch((error) => {

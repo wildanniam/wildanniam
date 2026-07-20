@@ -45,7 +45,7 @@ function eventToLine(event) {
     case "PullRequestEvent": {
       const action = event.payload?.action || "updated";
       const number = event.payload?.pull_request?.number;
-      const prUrl = event.payload?.pull_request?.html_url || repoLink;
+      const prUrl = event.payload?.pull_request?.html_url || (number ? `${repoLink}/pull/${number}` : repoLink);
       const suffix = number ? ` [#${number}](${prUrl})` : "";
       return `- ${date}: ${action} pull request${suffix} in [${repo}](${repoLink}).`;
     }

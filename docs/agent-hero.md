@@ -1,29 +1,65 @@
-# Agent Hero
+# Builder Profile Hero
 
-The profile hero is generated as an animated SVG so it can run directly inside the GitHub README without JavaScript or external UI runtimes.
+The GitHub profile hero is a responsive SVG identity card built around Wildan's
+builder-first positioning. It keeps the portrait-derived ASCII treatment while
+using the same warm, ember-led direction as the portfolio website.
 
 ## Generate assets
 
 ```bash
-node scripts/generate-agent-hero.mjs --source /absolute/path/to/portrait.jpg
+node scripts/generate-agent-hero.mjs --source /absolute/path/to/portrait.png
 ```
 
-The script produces desktop and mobile SVG assets for GitHub dark and light themes. The existing `assets/header.png` remains the stable PNG fallback in the README.
+The source portrait stays local. Only generated SVG assets and the optimized PNG
+fallback belong in the public repository.
 
-GitHub proxies README images and may keep an older SVG when its URL is reused. When publishing a visual revision, increment the filename version in both the generator and README sources instead of overwriting an already published path.
+The generator produces these cache-versioned files:
 
-## Visual system
+- `builder-profile-v1-dark.svg`
+- `builder-profile-v1-light.svg`
+- `builder-profile-v1-mobile-dark.svg`
+- `builder-profile-v1-mobile-light.svg`
 
-- Desktop assets use a compact `1180x610` console layout with a visual map and a structured system information panel.
-- Mobile assets stack the portrait and information panels so the text remains legible instead of shrinking the desktop composition.
-- The portrait source is a transparent PNG. The generator composites it onto white only during sampling, preserves the subject from head through torso, and converts the real silhouette with a ten-character luminance ramp plus restrained edge weighting for facial and clothing detail.
-- The portrait panel uses a low-opacity ambient network layer with a sparse grid, large orbital paths, edge nodes, and a soft halo. These elements remain behind the ASCII silhouette and avoid high-frequency detail so the subject stays dominant.
-- System information is grouped into identity, research direction, active builds, and profile links.
+GitHub proxies README images and may cache an existing URL. A material visual
+revision should use a new versioned filename and update all four README sources.
+
+## Content sources
+
+- Stable identity and working-method copy live in
+  `scripts/generate-agent-hero.mjs`.
+- The five project names and focus labels come from
+  `data/featured-projects.json`.
+- Detailed project descriptions, roles, statuses, and links are presented in
+  `README.md`.
+
+This split keeps the hero concise while preventing its selected-work list from
+drifting away from the structured project set.
+
+## Rendering guarantees
+
+- The portrait and all essential text are visible in the SVG's base state.
+- Essential content does not depend on SMIL, zero-size clips, masks, opacity
+  reveals, JavaScript, or network requests.
+- Motion is limited to two quiet decorative treatments and only runs when
+  `prefers-reduced-motion: no-preference` is active.
+- Desktop and mobile have separate compositions so the information panel remains
+  readable instead of shrinking the desktop asset.
+- `assets/header.png` is the optimized 1180×610 light fallback used by README
+  renderers that do not select the SVG sources.
+
+## Validate deterministic output
+
+```bash
+node --check scripts/generate-agent-hero.mjs
+node scripts/generate-agent-hero.mjs --source /absolute/path/to/portrait.png --check
+xmllint --noout assets/hero/builder-profile-v1-*.svg
+```
+
+`--check` regenerates the expected strings in memory and compares all four files
+byte-for-byte. It exits non-zero when an asset is missing or stale.
 
 ## Portrait privacy
 
-Do not commit the original source portrait. The public repository should contain only the generated SVG assets and the existing profile fallback banner.
-
-## Content source
-
-The profile fields and portrait crop are intentionally maintained in `scripts/generate-agent-hero.mjs`. Keep them concise and evidence-based. The crop is tuned for a `3072x4096` transparent source portrait and should be reviewed when the source image changes. The hero is a stable identity card; activity and changing project detail remain in the README sections below it.
+Do not commit the original portrait. The crop is tuned for Wildan's approved
+3072×4096 transparent source and must be visually reviewed when that source or
+crop changes.
