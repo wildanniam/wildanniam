@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 import { execFile } from "node:child_process";
+import { statSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { basename, resolve } from "node:path";
+import { basename, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
@@ -147,7 +148,14 @@ function getSourcePath() {
     throw new Error("Usage: node scripts/generate-agent-hero.mjs --source /absolute/path/to/portrait.jpg");
   }
 
-  return resolve(process.argv[sourceIndex + 1]);
+  const sourcePath = resolve(process.argv[sourceIndex + 1]);
+  const allowedExtensions = new Set([".jpg", ".jpeg", ".png"]);
+
+  if (!allowedExtensions.has(extname(sourcePath).toLowerCase()) || !statSync(sourcePath).isFile()) {
+    throw new Error("--source must point to an existing .jpg, .jpeg, or .png file.");
+  }
+
+  return sourcePath;
 }
 
 function readToken(buffer, offset) {
