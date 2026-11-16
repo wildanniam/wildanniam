@@ -28,7 +28,7 @@ revision should use a new versioned filename and update all four README sources.
 
 - Stable identity and working-method copy live in
   `scripts/generate-agent-hero.mjs`.
-- The five project names and focus labels come from
+- The six project names and focus labels come from
   `data/featured-projects.json`.
 - Detailed project descriptions, roles, statuses, and links are presented in
   `README.md`.

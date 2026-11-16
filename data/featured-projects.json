@@ -11,6 +11,28 @@
     "tags": ["Web3 Trust", "On-chain Intelligence", "Applied AI", "Internet Computer", "Motoko", "Rust"]
   },
   {
+    "name": "SWARA",
+    "repo": "wildanniam/SWARA-NASA",
+    "url": "https://github.com/wildanniam/SWARA-NASA",
+    "homepage": "https://swara.space",
+    "role": "Team Lead · Full-Stack Developer",
+    "status": "NASA Space Apps 2026 · Submitted",
+    "focus": "Infrared sky by eye and ear",
+    "summary": "Lets anyone explore NASA SPHEREx infrared sky data by eye and by ear: watch a patch of sky change over sixteen years, inspect its spectrum, and listen to it as sound.",
+    "tags": ["Data Sonification", "Astronomy", "React", "TypeScript", "Python"]
+  },
+  {
+    "name": "Backgrounder",
+    "repo": "jamesmurdza/background-agents",
+    "url": "https://github.com/jamesmurdza/background-agents",
+    "homepage": "https://backgrounder.dev",
+    "role": "Open-Source Contributor",
+    "status": "Live",
+    "focus": "AI coding agents in sandboxes",
+    "summary": "Runs AI coding agents in isolated cloud sandboxes connected to your GitHub repositories, where you can preview the app, review the changes, and open a pull request.",
+    "tags": ["AI Agents", "Developer Tools", "Sandboxes", "Next.js", "TypeScript"]
+  },
+  {
     "name": "PayGate",
     "repo": "wildanniam/paygate-stellar",
     "url": "https://github.com/wildanniam/paygate-stellar",
@@ -33,25 +55,14 @@
     "tags": ["AI Agents", "Wallet Intelligence", "Human-in-the-loop", "Next.js", "TypeScript"]
   },
   {
-    "name": "SpecHeal",
-    "repo": "antech2-async/SpecHeal",
-    "url": "https://github.com/antech2-async/SpecHeal",
-    "homepage": null,
-    "role": "Team Lead · Full-Stack & Product Developer",
-    "status": "Hackathon Prototype · Offline",
-    "focus": "AI-assisted test recovery",
-    "summary": "Helps teams distinguish safe selector recovery from real product bugs before applying a controlled repair.",
-    "tags": ["AI-assisted Development", "Software Reliability", "Playwright", "Next.js", "TypeScript"]
-  },
-  {
-    "name": "Quorum",
-    "repo": "wildanniam/Quorum",
-    "url": "https://github.com/wildanniam/Quorum",
-    "homepage": "https://quorum-sandy-eight.vercel.app",
-    "role": "Team Lead · Full-Stack & Smart Contract Engineer",
-    "status": "Active Stellar Testnet Build",
-    "focus": "Collaborative event settlement",
-    "summary": "Connects event checkout, collaborator splits, wallet-bound passes, gated resources, and withdrawals on Stellar testnet.",
-    "tags": ["Smart Contracts", "Event Settlement", "Stellar", "Soroban", "Next.js", "Rust"]
+    "name": "Yieldex",
+    "repo": "wildanniam/yieldex-rwa",
+    "url": "https://github.com/wildanniam/yieldex-rwa",
+    "homepage": "https://yieldex-rwa.vercel.app",
+    "role": "Smart Contract & Backend Engineer",
+    "status": "Top 10 · Ethereum Jakarta 2026",
+    "focus": "Tokenized income rights",
+    "summary": "A marketplace where holders of tokenized assets sell the income from those assets for a fixed period to get cash upfront, while keeping ownership of the assets.",
+    "tags": ["Real-World Assets", "Smart Contracts", "Ethereum", "Solidity", "Next.js"]
   }
 ]
