@@ -11,15 +11,15 @@
     "tags": ["Web3 Trust", "On-chain Intelligence", "Applied AI", "Internet Computer", "Motoko", "Rust"]
   },
   {
-    "name": "PayGate",
-    "repo": "wildanniam/paygate-stellar",
-    "url": "https://github.com/wildanniam/paygate-stellar",
-    "homepage": "https://trypaygate.com",
-    "role": "Founder · Builder",
-    "status": "Stellar Testnet Beta",
-    "focus": "Agentic API payments",
-    "summary": "Lets machine clients pay for individual API requests through HTTP 402 and Stellar testnet.",
-    "tags": ["Agentic Payments", "API Infrastructure", "Stellar", "Soroban", "TypeScript", "Rust"]
+    "name": "SWARA",
+    "repo": "wildanniam/SWARA-NASA",
+    "url": "https://github.com/wildanniam/SWARA-NASA",
+    "homepage": "https://swara.space",
+    "role": "Team Lead · Full-Stack Developer",
+    "status": "NASA Space Apps 2026 · Submitted",
+    "focus": "Infrared sky by eye and ear",
+    "summary": "Lets anyone explore NASA SPHEREx infrared sky data by eye and by ear: watch a patch of sky change over sixteen years, inspect its spectrum, and listen to it as sound.",
+    "tags": ["Data Sonification", "Astronomy", "React", "TypeScript", "Python"]
   },
   {
     "name": "Backgrounder",
@@ -33,26 +33,15 @@
     "tags": ["AI Agents", "Developer Tools", "Sandboxes", "Next.js", "TypeScript"]
   },
   {
-    "name": "SWARA",
-    "repo": "wildanniam/SWARA-NASA",
-    "url": "https://github.com/wildanniam/SWARA-NASA",
-    "homepage": "https://swara.space",
-    "role": "Team Lead · Full-Stack Developer",
-    "status": "NASA Space Apps 2026 · Submitted",
-    "focus": "Infrared sky by eye and ear",
-    "summary": "Lets anyone explore NASA SPHEREx infrared sky data by eye and by ear: watch a patch of sky change over sixteen years, inspect its spectrum, and listen to it as sound.",
-    "tags": ["Data Sonification", "Astronomy", "React", "TypeScript", "Python"]
-  },
-  {
-    "name": "Yieldex",
-    "repo": "wildanniam/yieldex-rwa",
-    "url": "https://github.com/wildanniam/yieldex-rwa",
-    "homepage": "https://yieldex-rwa.vercel.app",
-    "role": "Smart Contract & Backend Engineer",
-    "status": "Top 10 · Ethereum Jakarta 2026",
-    "focus": "Tokenized income rights",
-    "summary": "A marketplace where holders of tokenized assets sell the income from those assets for a fixed period to get cash upfront, while keeping ownership of the assets.",
-    "tags": ["Real-World Assets", "Smart Contracts", "Ethereum", "Solidity", "Next.js"]
+    "name": "PayGate",
+    "repo": "wildanniam/paygate-stellar",
+    "url": "https://github.com/wildanniam/paygate-stellar",
+    "homepage": "https://trypaygate.com",
+    "role": "Founder · Builder",
+    "status": "Stellar Testnet Beta",
+    "focus": "Agentic API payments",
+    "summary": "Lets machine clients pay for individual API requests through HTTP 402 and Stellar testnet.",
+    "tags": ["Agentic Payments", "API Infrastructure", "Stellar", "Soroban", "TypeScript", "Rust"]
   },
   {
     "name": "Nova AI Wallet",
@@ -64,5 +53,16 @@
     "focus": "AI wallet orchestration",
     "summary": "Turns wallet intent into clear actions while the connected wallet keeps final signing.",
     "tags": ["AI Agents", "Wallet Intelligence", "Human-in-the-loop", "Next.js", "TypeScript"]
+  },
+  {
+    "name": "Yieldex",
+    "repo": "wildanniam/yieldex-rwa",
+    "url": "https://github.com/wildanniam/yieldex-rwa",
+    "homepage": "https://yieldex-rwa.vercel.app",
+    "role": "Smart Contract & Backend Engineer",
+    "status": "Top 10 · Ethereum Jakarta 2026",
+    "focus": "Tokenized income rights",
+    "summary": "A marketplace where holders of tokenized assets sell the income from those assets for a fixed period to get cash upfront, while keeping ownership of the assets.",
+    "tags": ["Real-World Assets", "Smart Contracts", "Ethereum", "Solidity", "Next.js"]
   }
 ]

@@ -30,19 +30,19 @@ I enjoy taking projects from an early idea to a working release: defining the pr
 | Project | What it does | My role · Current state |
 | --- | --- | --- |
 | [**Fradium**](https://github.com/fradiumofficial/fradium) · [Live beta](https://fradium.io) | Surfaces address risk before a user sends funds by combining AI output with community signals. | Team Lead · Full-Stack Developer<br>Public Beta |
-| [**PayGate**](https://github.com/wildanniam/paygate-stellar) · [Testnet beta](https://trypaygate.com) | Lets machine clients pay for individual API requests through HTTP 402 and Stellar testnet. | Founder · Builder<br>Stellar Testnet Beta |
-| [**Backgrounder**](https://github.com/jamesmurdza/background-agents) · [Live](https://backgrounder.dev) | Runs AI coding agents in isolated cloud sandboxes connected to your GitHub repositories, where you can preview the app, review the changes, and open a pull request. | Open-Source Contributor<br>Live |
 | [**SWARA**](https://github.com/wildanniam/SWARA-NASA) · [Live](https://swara.space) | Lets anyone explore NASA SPHEREx infrared sky data by eye and by ear: watch a patch of sky change over sixteen years, inspect its spectrum, and listen to it as sound. | Team Lead · Full-Stack Developer<br>NASA Space Apps 2026 · Submitted |
-| [**Yieldex**](https://github.com/wildanniam/yieldex-rwa) · [Sepolia demo](https://yieldex-rwa.vercel.app) | A marketplace where holders of tokenized assets sell the income from those assets for a fixed period to get cash upfront, while keeping ownership of the assets. | Smart Contract & Backend Engineer<br>Top 10 · Ethereum Jakarta 2026 |
+| [**Backgrounder**](https://github.com/jamesmurdza/background-agents) · [Live](https://backgrounder.dev) | Runs AI coding agents in isolated cloud sandboxes connected to your GitHub repositories, where you can preview the app, review the changes, and open a pull request. | Open-Source Contributor<br>Live |
+| [**PayGate**](https://github.com/wildanniam/paygate-stellar) · [Testnet beta](https://trypaygate.com) | Lets machine clients pay for individual API requests through HTTP 402 and Stellar testnet. | Founder · Builder<br>Stellar Testnet Beta |
 | [**Nova AI Wallet**](https://github.com/OfficialNovaAI/nova-wallet) · [Public prototype](https://nova-wallet-puce.vercel.app) | Turns wallet intent into clear actions while the connected wallet keeps final signing. | Team Lead · AI Engineer<br>Public Prototype · Degraded |
+| [**Yieldex**](https://github.com/wildanniam/yieldex-rwa) · [Sepolia demo](https://yieldex-rwa.vercel.app) | A marketplace where holders of tokenized assets sell the income from those assets for a fixed period to get cash upfront, while keeping ownership of the assets. | Smart Contract & Backend Engineer<br>Top 10 · Ethereum Jakarta 2026 |
 
 ## Selected Highlights
 
 - **Fradium team:** winner of the [WCHL 2025 Global Finale Fully On-Chain Track](https://bse.telkomuniversity.ac.id/tim-fradium-berhasil-meraih-global-finale-winner-fully-on-chain-track-pada-world-computer-hacker-league-2025/).
-- **PayGate:** awarded a [$5,000 Stellar Community Fund Instaward](https://x.com/Indo_Stellar/status/2075550378553421994).
 - **Backgrounder:** open-source contributor to a platform for running AI coding agents in cloud sandboxes.
-- **Yieldex team:** Top 10 at Ethereum Jakarta 2026.
+- **PayGate:** awarded a [$5,000 Stellar Community Fund Instaward](https://x.com/Indo_Stellar/status/2075550378553421994).
 - **Nova AI team:** 1st notable mention and 1st Social Media Challenge winner at the [SEA Lisk Builder Challenge 3](https://bse.telkomuniversity.ac.id/prestasi-tim-nova-ai-di-south-east-asia-lisk-builder-challenge-3/).
+- **Yieldex team:** Top 10 at Ethereum Jakarta 2026.
 
 ## What I'm Exploring
 
